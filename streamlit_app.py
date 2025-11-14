@@ -205,7 +205,7 @@ def main():
     st.markdown("---")
 
 
-    st.sidebar.title("💡 Example Question🔒🚪s")
+    st.sidebar.title("💡 Example Questions")
     st.sidebar.markdown("""
     Try asking questions like:
                         
