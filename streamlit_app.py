@@ -16,7 +16,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 HASHED_PASSWORD = os.getenv("HASHED_PASSWORD").encode("utf-8")
 
 # Database schema for context
-DATABASE_SCHEMA = """
+DATABASE_SCHEMA2 = """
 Database Schema:
 
 LOOKUP TABLES:
@@ -68,6 +68,37 @@ IMPORTANT NOTES:
 - To calculate age: EXTRACT(YEAR FROM AGE(patient_dob))
 - To calculate length of stay: EXTRACT(EPOCH FROM (admission_end - admission_start)) / 86400 (gives days)
 - Always use proper JOINs for foreign key relationships
+"""
+DATABASE_SCHEMA = """
+Region 
+  [RegionID] Integer not null primary key
+  [Region] Text not null
+Country
+  [CountryID] integer not null Primary key
+  [Country] Text not null
+  [RegionID] integer not null foreign key to Region table
+Customer
+  [CustomerID] integer not null Primary Key
+  [FirstName] Text not null
+  [LastName] Text not null
+  [Address] Text not null
+  [City] Text not null
+  [CountryID] integer not null foreign key to Country table 
+ProductCateogry
+  [ProductCategoryID] integer not null Primary Key
+  [ProductCategory] Text not null
+  [ProductCategoryDescription] Text not null
+Product
+  [ProductID] integer not null Primary key
+  [ProductName] Text not null
+  [ProductUnitPrice] Real not null
+  [ProductCategoryID] integer not null foreign key to ProductCateogry table
+OrderDetail
+  [OrderID] integer not null Primary Key
+  [CustomerID] integer not null foreign key to Customer table
+  [ProductID] integer not null foreign key to Product table
+  [OrderDate] integer not null 
+  [QuantityOrdered] integer not null
 """
 
 
