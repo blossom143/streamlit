@@ -11,7 +11,7 @@ def test_postgress_connection(connection_string):
         cur.execute("SELECT version();")
         db_version = cur.fetchone()
         print("Connetion successful!")
-        print(f"PostgresSQL version: {db_version}")
+        print(f"PostgresSQL dbname: {conn.info.dbname}")
 
         cur.close()
         conn.close()

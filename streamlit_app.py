@@ -8,7 +8,7 @@ import os
 import bcrypt
 
 
-load_dotenv()  # reads variables from a .env file and sets them in os.environ
+load_dotenv(override=True)  # reads variables from a .env file and sets them in os.environ
 
 # OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 # HASHED_PASSWORD = st.secrets["HASHED_PASSWORD"].encode("utf-8")
@@ -84,7 +84,7 @@ Customer
   [Address] Text not null
   [City] Text not null
   [CountryID] integer not null foreign key to Country table 
-ProductCateogry
+ProductCategory
   [ProductCategoryID] integer not null Primary Key
   [ProductCategory] Text not null
   [ProductCategoryDescription] Text not null
