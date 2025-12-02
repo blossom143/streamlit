@@ -193,7 +193,7 @@ def run_query(sql):
         df = pd.read_sql_query(sql, conn)
         return df
     except Exception as e:
-        st.error(f"Error executing query: {e}")
+        st.error(f"Error executing query on {conn.info.dbname}: {e}")
         return None 
     
 
@@ -256,10 +256,10 @@ def main():
     Try asking questions like:
                         
     **Demographics:**
-    - How many patients do we have by gender?
+    - How many countries are we able to ship orders to?
                         
     **Admissions:**
-    - What is the average length of stay?                      
+    - What is the average sales cost per customer?                      
     """)
     st.sidebar.markdown("---")
     st.sidebar.info("""
@@ -290,7 +290,7 @@ def main():
     user_question = st.text_area(
         " What would you like to know?",
         height=100, 
-        placeholder="What is the average length of stay?    "
+        placeholder="How many product categories are available? "
     )
 
     col1, col2, col3 = st.columns([1, 1, 4])
