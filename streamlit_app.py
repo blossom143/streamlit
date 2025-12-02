@@ -10,9 +10,10 @@ import bcrypt
 
 load_dotenv()  # reads variables from a .env file and sets them in os.environ
 
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-HASHED_PASSWORD = st.secrets["HASHED_PASSWORD"].encode("utf-8")
-
+# OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+# HASHED_PASSWORD = st.secrets["HASHED_PASSWORD"].encode("utf-8")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+HASHED_PASSWORD = os.getenv("HASHED_PASSWORD").encode("utf-8")
 
 # Database schema for context
 DATABASE_SCHEMA = """
@@ -112,19 +113,33 @@ def require_login():
         login_screen()
         st.stop()
 
+# @st.cache_resource
+# def get_db_url():
+#     POSTGRES_USERNAME = st.secrets["POSTGRES_USERNAME"]
+#     POSTGRES_PASSWORD = st.secrets["POSTGRES_PASSWORD"]
+#     POSTGRES_SERVER = st.secrets["POSTGRES_SERVER"]
+#     POSTGRES_DATABASE = st.secrets["POSTGRES_DATABASE"]
+
+#     DATABASE_URL = f"postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DATABASE}"
+
+#     return DATABASE_URL
+
+# DATABASE_URL = get_db_url()
+
 @st.cache_resource
 def get_db_url():
-    POSTGRES_USERNAME = st.secrets["POSTGRES_USERNAME"]
-    POSTGRES_PASSWORD = st.secrets["POSTGRES_PASSWORD"]
-    POSTGRES_SERVER = st.secrets["POSTGRES_SERVER"]
-    POSTGRES_DATABASE = st.secrets["POSTGRES_DATABASE"]
+    POSTGRES_USERNAME = os.getenv("POSTGRES_USERNAME")
+    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+    POSTGRES_SERVER = os.getenv("POSTGRES_SERVER")
+    POSTGRES_DATABASE = os.getenv("POSTGRES_DATABASE")
 
-    DATABASE_URL = f"postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DATABASE}"
-
+    DATABASE_URL = (
+        f"postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}"
+        f"@{POSTGRES_SERVER}/{POSTGRES_DATABASE}"
+    )
     return DATABASE_URL
 
 DATABASE_URL = get_db_url()
-
 
 @st.cache_resource
 def get_db_connection():
@@ -311,9 +326,9 @@ def main():
         st.subheader("📜 Query History")
         for idx, item in enumerate(reversed(st.session_state.query_history[-5:])):
             with st.expander(f"Query {len(st.session_state.query_history)-idx}: {item['question'][:60]}..."):
-                st.markdown(f"**Question:** {item["question"]}")
+                st.markdown(f"**Question:** {item['question']}")
                 st.code(item["sql"], language="sql")
-                st.caption(f"Returned {item["rows"]} rows")
+                st.caption(f"Returned {item['rows']} rows")
                 if st.button(f"Re-run this query", key=f"rerun_{idx}"):
                     df = run_query(item["sql"])
                     if df is not None:
