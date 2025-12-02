@@ -1,4 +1,4 @@
-# AI-Powered SQL Query Assistant
+# AI-Powered SQL Query Assistant - Tsomorlig's Version
 
 ## Supporting Services
 
